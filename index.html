@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <script src="jspsych/plugins/plugin-image-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+  </head>
+  <body>
+</body>
+  <script>
+
+const jsPsych = initJsPsych();
+
+
+    var timeline = [];
+    var rts =[];
+    var events = [];
+
+var trial_1 = {
+
+  type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "<p>Judge the famous</p>",
+    trial_duration: "1800"
+
+}
+
+timeline.push(trial_1);
+
+var trial_2 = {
+
+  type: jsPsychImageButtonResponse,
+    stimulus: ['images/1.jpg',],
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+}
+
+timeline.push(trial_2);
+
+var trial_3 = {
+  type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
+    prompt: "<p>How much do you love or hate the celebrity?</p>",
+    trial_duration: "2700"
+}
+timeline.push(trial_3);
+
+var trial_4 = {
+
+  type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+
+timeline.push(trial_4);
+
+
+var trial_5 = {
+  type: jsPsychImageButtonResponse,
+    stimulus: ['images/3.jpg',],
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "5000"
+}
+timeline.push(trial_5);
+
+var trial_6 = {
+
+  type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "<p>Judge the famous</p>",
+    trial_duration: "5000"
+}
+
+timeline.push(trial_6);
+
+    var trial_7 = {
+
+      type: jsPsychImageButtonResponse,
+    stimulus: ['images/with_order_2.jpeg',],
+    stimulus_width:"608",
+    stimulus_height:'175' ,
+    choices: ['1. Correct order', '2. Wrong order', '3. No specific order'],
+    prompt: "<p>What kind of order appears on the screen?</p>"
+    }
+    jsPsych.run([timeline]);
+
+  </script>
+</html>

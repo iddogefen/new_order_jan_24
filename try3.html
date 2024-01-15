@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <style>
+        .hide_cursor {
+            cursor: none;
+        }
+        </style>
+
+    <title>My experiment</title>
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <!--<script src="jspsych/plugins/jspsych-order.js"></script>-->
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-survey-text.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-image-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-html-audio-response.js"></script>
+    <script src="jspsych/plugins/plugin-initialize-microphone.js"></script>
+    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
+    <script src="Tools/Functions.js"></script>
+
+
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+  </head>
+  <body></body>
+  <script>
+
+    /* initialize jsPsych */
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+        jsPsych.data.displayData();
+      }
+    });
+
+    /* create timeline */
+    var timeline = [];
+
+    /* preload images */
+    var preload = {
+      type: jsPsychPreload,
+      images: ['images/blue.png', 'images/orange.png', 'images/1.jpg']
+    };
+    timeline.push(preload);
+
+    var trial_00 = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: true
+}
+
+timeline.push(trial_00);
+    
+    var trial_0 = {
+        type: jsPsychInitializeMicrophone
+    };
+    timeline.push(trial_0);
+
+    /* define welcome message trial */
+    var trial_1 = {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "<p>Judge the famous</p>",
+    trial_duration: "1800"
+
+    };
+    timeline.push(trial_1);
+
+    /* define instructions trial */
+    var trial_2 = {
+    type: jsPsychImageButtonResponse,
+    stimulus: ['images/1.jpg',],
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+    };
+    timeline.push(trial_2);
+
+    /* define fixation and test trials */
+    var trial_3 = {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
+    prompt: "<p>How much do you love or hate the celebrity?</p>",
+    trial_duration: "2700"
+    };
+    timeline.push(trial_3);
+
+
+    var trial_4 = {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+    };
+    timeline.push(trial_4);
+
+
+    
+    var trial_5 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `
+        <p>Please sing the first few seconds of a song and click the button when you are done.</p>`,
+    recording_duration: "15000",
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { audio_base64: data.response })
+            .then((audio_id))
+
+    }
+};
+    timeline.push(trial_5);
+
+
+    var test = {
+      type: jsPsychImageKeyboardResponse,
+      stimulus: jsPsych.timelineVariable('stimulus'),
+      choices: ['f', 'j'],
+      data: {
+        task: 'response',
+        correct_response: jsPsych.timelineVariable('correct_response')
+      },
+      on_finish: function(data){
+        data.correct = jsPsych.pluginAPI.compareKeys(data.response, data.correct_response);
+      }
+    };
+
+    /* define test procedure */
+    var test_procedure = {
+      timeline: [],
+      repetitions: 5,
+      randomize_order: true
+    };
+    timeline.push(test_procedure);
+
+    /* define debrief */
+    var debrief_block = {
+      type: jsPsychHtmlKeyboardResponse,
+      stimulus: function() {
+
+        var trials = jsPsych.data.get().filter({task: 'response'});
+        var correct_trials = trials.filter({correct: true});
+        var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+        var rt = Math.round(correct_trials.select('rt').mean());
+
+        return `<p>You responded correctly on ${accuracy}% of the trials.</p>
+          <p>Your average response time was ${rt}ms.</p>
+          <p>Press any key to complete the experiment. Thank you!</p>`;
+
+      }
+    };
+    timeline.push(debrief_block);
+
+    /* start the experiment */
+    jsPsych.run(timeline);
+    
+
+  </script>
+</html>
