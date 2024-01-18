@@ -51,12 +51,14 @@
   fullscreen_mode: true
 }
 
+  /* create timeline */
 timeline.push(trial_01);
     
+/*
     var trial_02 = {
         type: jsPsychInitializeMicrophone
     };
-    timeline.push(trial_02);
+    timeline.push(trial_02);*/
 
     /* define welcome message trial */
     var trial_7 = {
@@ -227,6 +229,8 @@ timeline.push(trial_01);
     };
     timeline.push(trial_22);
     
+        /* start the experiment 
+
     var trial_23 = {
     type: jsPsychHtmlAudioResponse,
     stimulus: `
@@ -239,7 +243,15 @@ timeline.push(trial_01);
 
     }
 };
-    timeline.push(trial_23);
+    timeline.push(trial_23);*/
+
+    var trial_24 = {
+    type: jsPsychSurveyText,
+    questions: [
+    {prompt: 'Write the list of celebs you saw'}
+  ]
+    };
+    timeline.push(trial_24);
 
     /* start the experiment */
     jsPsych.run(timeline);
