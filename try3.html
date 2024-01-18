@@ -32,11 +32,27 @@
     var jsPsych = initJsPsych({
       on_finish: function() {
         jsPsych.data.displayData();
+        saveData(data_folder+'All_data/all_data_sub_'+subject_id+".csv", jsPsych.data.get().csv());
+        jsPsych.data.get().localSave('csv','mydata.csv');
+
       }
     });
 
     /* create timeline */
     var timeline = [];
+    // generate a random subject ID with 15 characters
+var subject_id = jsPsych.randomization.randomID(15);
+
+// pick a random condition for the subject at the start of the experiment
+var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['conditionA', 'conditionB', 'conditionC'], 1)[0];
+
+// record the condition assignment in the jsPsych data
+// this adds a property called 'subject' and a property called 'condition' to every trial
+jsPsych.data.addProperties({
+  subject: subject_id,
+  condition: condition_assignment
+});
+
 
     /* preload images */
     var preload = {
