@@ -47,7 +47,8 @@ var tools_folder            = 'Tools'
     });
 
     /* create timeline */
-    var timeline = [];
+var timeline = [];
+
     // generate a random subject ID with 15 characters
 var subject_id = jsPsych.randomization.randomID(15);
 
@@ -84,8 +85,119 @@ timeline.push(trial_01);
     };
     timeline.push(trial_02);
 
+    var trial_03 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px"> Welcome to the experiment. Click next to begin.</span>',
+    '<span style="color: black; font-size: 24px"> In this experiment, you will see a list of celebrity photos.  </span>' +'<br/>'+ '<span style="color: black; font-size: 24px">  </span>'
+    +'<br/>'+ '<span style="color: black; font-size: 24px"> After the picture is displayed, you will be asked to say how much you like that specific celebrity. </span>'
+    +'<br/>'+ '<span style="color: black; font-size: 24px"> Click "Next" for an example. </span>',
+    
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_03);
+
+
+    var trial_04 = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p>Press a number 1-7 to indicate how unusual the image is.</p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
+    prompt: "<p>How much do you love or hate the celebrity?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+        {face: 'images/celebrities/1.png'},
+        {face: 'images/celebrities/3.png'},
+        {face: 'images/celebrities/5.png'}
+
+    ],
+
+}
+    timeline.push(trial_04);
+
+    
+    var trial_05 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px">At the end of the list, you will be asked to say out loud the names of the celebs you saw. The names can be said in any order.</span>',
+        '<span style="color: black; font-size: 24px"> Click "Next" for an example. </span>',
+    
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_05);
+
+    
+    var trial_06 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `
+        <p>Please say out loud the names of the celebs you saw. The names can be said in any order.</p>`,
+    recording_duration: 15000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+ timeline.push(trial_06);
+
+
+ var trial_07 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px"> Great.</span>' +'<br/>'+ '<span style="color: black; font-size: 24px"> When you are ready, start the experiment.</span>'
+
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_07);
+    
+
     /* define welcome message trial */
-    var trial_7 = {
+    var trial_08 = {
     type: jsPsychImageButtonResponse,
     stimulus: [],
     choices: [],
@@ -93,169 +205,54 @@ timeline.push(trial_01);
     trial_duration: "1800"
 
     };
-    timeline.push(trial_7);
+    timeline.push(trial_08);
 
-    /* define instructions trial */
-    var trial_8 = {
+
+    var trial_09 = {
+    timeline: [
+
+    {
     type: jsPsychImageButtonResponse,
-    stimulus: ['images/celebrities/1.png',],
+    stimulus: jsPsych.timelineVariable('face'),
     stimulus_width:"300",
     stimulus_height:'300' ,
     choices: [],
     prompt: "",
     trial_duration: "4500"
-    };
-    timeline.push(trial_8);
 
-    /* define fixation and test trials */
-    var trial_9 = {
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p>Press a number 1-7 to indicate how unusual the image is.</p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
+    prompt: "<p>How much do you love or hate the celebrity?</p>",  },
+  {
     type: jsPsychImageButtonResponse,
     stimulus: [],
-    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
-    prompt: "<p>How much do you love or hate the celebrity?</p>",
-    trial_duration: "2700"
-    };
-    timeline.push(trial_9);
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+        {face: 'images/celebrities/1.png'},
+        {face: 'images/celebrities/3.png'},
+        {face: 'images/celebrities/5.png'},
+        {face: 'images/celebrities/7.png'}
+
+    ],
+    randomize_order: true
+
+
+}
+    timeline.push(trial_09);
 
 
     var trial_10 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "",
-    trial_duration: "1800"
-    };
-    timeline.push(trial_10);
-
-    var trial_11= {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "<p>Judge the famous</p>",
-    trial_duration: "1800"
-
-    };
-    timeline.push(trial_11);
-
-    /* define instructions trial */
-    var trial_12 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: ['images/celebrities/3.png',],
-    stimulus_width:"300",
-    stimulus_height:'300' ,
-    choices: [],
-    prompt: "",
-    trial_duration: "4500"
-    };
-    timeline.push(trial_12);
-
-    /* define fixation and test trials */
-    var trial_13 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
-    prompt: "<p>How much do you love or hate the celebrity?</p>",
-    trial_duration: "2700"
-    };
-    timeline.push(trial_13);
-
-
-    var trial_14 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "",
-    trial_duration: "1800"
-    };
-    timeline.push(trial_14);
-
-    var trial_15= {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "<p>Judge the famous</p>",
-    trial_duration: "1800"
-
-    };
-    timeline.push(trial_15);
-
-    /* define instructions trial */
-    var trial_16 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: ['images/celebrities/5.png',],
-    stimulus_width:"300",
-    stimulus_height:'300' ,
-    choices: [],
-    prompt: "",
-    trial_duration: "4500"
-    };
-    timeline.push(trial_16);
-
-    /* define fixation and test trials */
-    var trial_17 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
-    prompt: "<p>How much do you love or hate the celebrity?</p>",
-    trial_duration: "2700"
-    };
-    timeline.push(trial_17);
-
-
-    var trial_18 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "",
-    trial_duration: "1800"
-    };
-    timeline.push(trial_18);
-
-    var trial_19= {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "<p>Judge the famous</p>",
-    trial_duration: "1800"
-
-    };
-    timeline.push(trial_19);
-
-    /* define instructions trial */
-    var trial_20 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: ['images/celebrities/7.png',],
-    stimulus_width:"300",
-    stimulus_height:'300' ,
-    choices: [],
-    prompt: "",
-    trial_duration: "4500"
-    };
-    timeline.push(trial_20);
-
-    /* define fixation and test trials */
-    var trial_21 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: ['1.hate very much', '2.hate', '3.indifferent', '4. love', '5.love very much'],
-    prompt: "<p>How much do you love or hate the celebrity?</p>",
-    trial_duration: "2700"
-    };
-    timeline.push(trial_21);
-
-
-    var trial_22 = {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "",
-    trial_duration: "1800"
-    };
-    timeline.push(trial_22);
-    
-
-
-    var trial_23 = {
     type: jsPsychHtmlAudioResponse,
     stimulus: `
         <p>Please sing the first few seconds of a song and click the button when you are done.</p>`,
@@ -282,15 +279,29 @@ timeline.push(trial_01);
         });
     }
 };
- timeline.push(trial_23);
+ timeline.push(trial_10);
 
-    var trial_24 = {
-    type: jsPsychSurveyText,
-    questions: [
-    {prompt: 'Write the list of celebs you saw'}
+
+var trial_11 = {
+  type: jsPsychSurveyText,
+  questions: [
+    {prompt: 'please insert your gender (MALE/ FEMALE/ OTHER)'},
+    {prompt: 'Please insert your age'}
   ]
+}
+timeline.push(trial_11);
+
+
+var trial_12 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px"> You have completed the experiment.'  +'<br/>'+ 'The Completion Code is : AJFHBG897' +'<br/>'+  'Thank you for your participation!</span>'
+
+    ],
+    show_clickable_nav: true
     };
-    timeline.push(trial_24);
+    timeline.push(trial_12);
 
     /* start the experiment */
     jsPsych.run(timeline);
