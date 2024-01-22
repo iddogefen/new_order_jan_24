@@ -269,7 +269,7 @@ timeline.push(trial_01);
             },
             body: JSON.stringify({ audio_base64: data.response })
         })
-        .then(response => response.json())+
+        .then(response => response.json())
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
