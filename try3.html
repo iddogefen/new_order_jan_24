@@ -261,7 +261,11 @@ timeline.push(trial_01);
         <p>Please sing the first few seconds of a song and click the button when you are done.</p>`,
     recording_duration: "15000",
     allow_playback: true,
-    save_audio_url: true
+    on_finish: function(data){
+        fetch('/save-my-data.php', { audio_base64: data.response })
+            .then((audio_id))
+
+    }
 };
     timeline.push(trial_23);
 
