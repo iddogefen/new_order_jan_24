@@ -39,7 +39,6 @@ var tools_folder            = 'Tools'
     /* initialize jsPsych */
     var jsPsych = initJsPsych({
       on_finish: function() {
-        jsPsych.data.displayData();
         saveData(data_folder+'All_data/all_data_sub_'+subject_id+".csv", jsPsych.data.get().csv());
         //jsPsych.data.get().localSave('csv','mydata.csv');
 
