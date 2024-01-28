@@ -53,13 +53,38 @@ var timeline = [];
 var subject_id = jsPsych.randomization.randomID(15);
 
 // pick a random condition for the subject at the start of the experiment
-var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['conditionA', 'conditionB', 'conditionC'], 1)[0];
+//var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['conditionA', 'conditionB', 'conditionC'], 1)[0];
 
-// record the condition assignment in the jsPsych data
+
+function getRandomCondition() {
+    const conditions = ['linear', 'nonlinear', 'noOrder'];
+    const randomIndex = Math.floor(Math.random() * conditions.length);
+    return conditions[randomIndex];
+}
+
+function chooseRandomItems(list, condition, count) {
+    const items = list[condition];
+    if (condition === 'linear') {
+        // If the condition is 'linear', keep the original order
+        return items.slice(0, count).map(item => ({ condition, path: item }));
+    } else {
+        // If the condition is not 'linear', shuffle the items
+        const shuffledItems = items.sort(() => Math.random() - 0.5).slice(0, count);
+        return shuffledItems.map(item => ({ condition, path: item }));
+    }
+}
+var list0 = [
+    'images/instructions/timeline_0/1_Barck_Obama.png',
+    'images/instructions/timeline_0/2_Leonardo_DiCaprio.png',
+    'images/instructions/timeline_0/3_Beyonce.png',
+    'images/instructions/timeline_0/4_Taylor_Swift.png',
+];
+
+
 // this adds a property called 'subject' and a property called 'condition' to every trial
 jsPsych.data.addProperties({
   subject: subject_id,
-  condition: condition_assignment
+  //condition: condition_assignment
 });
 
 
@@ -67,7 +92,7 @@ jsPsych.data.addProperties({
     var preload = {
       type: jsPsychPreload,
       images: ['images/instructions/timeline_0/1_Barck_Obama.png', 'images/instructions/timeline_0/2_Leonardo_DiCaprio.png',
-       'images/instructions/timeline_0/3_Beyonce.png', 'images/instructions/timeline_0/4_Taylor_Swift.png', 'images/list_1/timeline_1/1_Clint Eastwood.png',
+       'images/instructions/timeline_0/3_Beyonce.png', 'images/instructions/timeline_0/4_Taylor_Swift.png', 'images/list_1/timeline_1/1_Clint_Eastwood.png',
         'images/list_1/timeline_1/2_Julie_Andrews.png', 'images/list_1/timeline_1/3_Patrick_Stewart.png', 'images/list_1/timeline_1/4_Stevie_Wonder.png',
         'images/list_1/timeline_1/5_Sean_Penn.png','images/list_1/timeline_1/6__Brooke_Shields.png','images/list_1/timeline_1/7_Tina_Fey.png',
         'images/list_1/timeline_1/8__Pedro_Pascal.png','images/list_1/timeline_1/9_Kristen_Bell.png','images/list_1/timeline_1/10_Jennifer_Lawrence.png',
@@ -80,7 +105,23 @@ jsPsych.data.addProperties({
         'images/list_3/timeline_3/2_Ben_Kingsley.png','images/list_3/timeline_3/3_Billy_Crystal.png', 'images/list_3/timeline_3/4_Cyndi_Lauper.png',
         'images/list_3/timeline_3/5_Alec_Baldwin.png', 'images/list_3/timeline_3/6_Brad_Pitt.png', 'images/list_3/timeline_3/7_Sharon_Stone.png',
         'images/list_3/timeline_3/8_Tyra_Banks.png','images/list_3/timeline_3/9_John_Legend.png','images/list_3/timeline_3/10_Jonah_Hill.png',
-        'images/list_3/timeline_3/11_Ariana_Grande.png','images/list_3/timeline_3/12_Greta_Thunberg.png']};
+        'images/list_3/timeline_3/11_Ariana_Grande.png','images/list_3/timeline_3/12_Greta_Thunberg.png',
+    
+    'images/list_1/control_1/1_Clint Eastwood_f.png',
+'images/list_1/control_1/2_Julie_Andrews_f.png', 'images/list_1/control_1/3_Patrick_Stewart_f.png', 'images/list_1/control_1/4_Stevie_Wonder_f.png',
+'images/list_1/control_1/5_Sean_Penn_f.png','images/list_1/control_1/6__Brooke_Shields_f.png','images/list_1/control_1/7_Tina_Fey_f.png',
+'images/list_1/control_1/8__Pedro_Pascal_f.png','images/list_1/control_1/9_Kristen_Bell_f.png','images/list_1/control_1/10_Jennifer_Lawrence_f.png',
+'images/list_1/control_1/11_Timothee_Chalamet_f.png','images/list_1/control_1/12_Halle_Bailey_f.png','images/list_2/control_2/1_Muhammad_Ali_f.png',
+'images/list_2/control_2/2_Paul_Simon_f.png', 'images/list_2/control_2/3_Dolly_Parton_f.png', 'images/list_2/control_2/4_Robin_Williams_f.png',
+'images/list_2/control_2/5_Eddie_Murphy_f.png','images/list_2/control_2/6_Halle_Berry_f.png', 'images/list_2/control_2/7_Amy_Poehler_f.png',
+'images/list_2/control_2/8_Cillian_Murphy_f.png','images/list_2/control_2/9_Jessica_Alba_f.png',
+'images/list_2/control_2/10_Robert_Pattinson_f.png','images/list_2/control_2/11_Emma_Robert_f.png',
+'images/list_2/control_2/12_Billie_Eilish_f.png','images/list_3/control_3/1_Yoko_Ono_f.png',
+'images/list_3/control_3/2_Ben_Kingsley_f.png','images/list_3/control_3/3_Billy_Crystal_f.png', 'images/list_3/control_3/4_Cyndi_Lauper_f.png',
+'images/list_3/control_3/5_Alec_Baldwin_f.png', 'images/list_3/control_3/6_Brad_Pitt_f.png', 'images/list_3/control_3/7_Sharon_Stone_f.png',
+'images/list_3/control_3/8_Tyra_Banks_f.png','images/list_3/control_3/9_John_Legend_f.png','images/list_3/control_3/10_Jonah_Hill_f.png',
+'images/list_3/control_3/11_Ariana_Grande_f.png','images/list_3/control_3/12_Greta_Thunberg_f.png'
+]};
     timeline.push(preload);
 
     var trial_01 = {
@@ -97,13 +138,476 @@ timeline.push(trial_01);
     };
     timeline.push(trial_02);
 
+    var list_1_linear = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  },
+],
+
+
+timeline_variables: [
+        {face: 'images/list_1/timeline_1/1_Clint_Eastwood.png'},
+        {face: 'images/list_1/timeline_1/2_Julie_Andrews.png'},
+        {face: 'images/list_1/timeline_1/3_Patrick_Stewart.png'},
+        {face: 'images/list_1/timeline_1/4_Stevie_Wonder.png'},
+        {face: 'images/list_1/timeline_1/5_Sean_Penn.png'},
+        {face: 'images/list_1/timeline_1/6__Brooke_Shields.png'},
+        {face: 'images/list_1/timeline_1/7_Tina_Fey.png'},
+        {face: 'images/list_1/timeline_1/8__Pedro_Pascal.png'},
+        {face: 'images/list_1/timeline_1/9_Kristen_Bell.png'},
+        {face: 'images/list_1/timeline_1/10_Jennifer_Lawrence.png'},
+        {face: 'images/list_1/timeline_1/11_Timothee_Chalamet.png'},
+        {face: 'images/list_1/timeline_1/12_Halle_Bailey.png'}
+    ],
+    randomize_order: false,
+
+
+}
+
+var list_1_nonlinear = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  },
+],
+
+
+timeline_variables: [
+        {face: 'images/list_1/timeline_1/1_Clint_Eastwood.png'},
+        {face: 'images/list_1/timeline_1/2_Julie_Andrews.png'},
+        {face: 'images/list_1/timeline_1/3_Patrick_Stewart.png'},
+        {face: 'images/list_1/timeline_1/4_Stevie_Wonder.png'},
+        {face: 'images/list_1/timeline_1/5_Sean_Penn.png'},
+        {face: 'images/list_1/timeline_1/6__Brooke_Shields.png'},
+        {face: 'images/list_1/timeline_1/7_Tina_Fey.png'},
+        {face: 'images/list_1/timeline_1/8__Pedro_Pascal.png'},
+        {face: 'images/list_1/timeline_1/9_Kristen_Bell.png'},
+        {face: 'images/list_1/timeline_1/10_Jennifer_Lawrence.png'},
+        {face: 'images/list_1/timeline_1/11_Timothee_Chalamet.png'},
+        {face: 'images/list_1/timeline_1/12_Halle_Bailey.png'}
+    ],
+    randomize_order: true,
+
+}
+
+
+
+var list_1_no_order = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['hot', 'cold'],
+    prompt: "<p>Is their favorite food hot or cold?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  },
+],
+
+
+timeline_variables: [
+
+        {face: 'images/list_1/control_1/1_Clint_Eastwood_f.png'},
+        {face: 'images/list_1/control_1/2_Julie_Andrews_f.png'},
+        {face: 'images/list_1/control_1/3_Patrick_Stewart_f.png'},
+        {face: 'images/list_1/control_1/4_Stevie_Wonder_f.png'},
+        {face: 'images/list_1/control_1/5_Sean_Penn_f.png'},
+        {face: 'images/list_1/control_1/6__Brooke_Shields_f.png'},
+        {face: 'images/list_1/control_1/7_Tina_Fey_f.png'},
+        {face: 'images/list_1/control_1/8__Pedro_Pascal_f.png'},
+        {face: 'images/list_1/control_1/9_Kristen_Bell_f.png'},
+        {face: 'images/list_1/control_1/10_Jennifer_Lawrence_f.png'},
+        {face: 'images/list_1/control_1/11_Timothee_Chalamet_f.png'},
+        {face: 'images/list_1/control_1/12_Halle_Bailey_f.png'}
+  ],
+  randomize_order: true
+
+}
+
+ var list_2_linear = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+{face: 'images/list_2/timeline_2/1_Muhammad_Ali.png'},
+{face: 'images/list_2/timeline_2/2_Paul_Simon.png'},
+{face: 'images/list_2/timeline_2/3_Dolly_Parton.png'},
+{face: 'images/list_2/timeline_2/4_Robin_Williams.png'},
+{face: 'images/list_2/timeline_2/5_Eddie_Murphy.png'},
+{face: 'images/list_2/timeline_2/6_Halle_Berry.png'},
+{face: 'images/list_2/timeline_2/7_Amy_Poehler.png'},
+{face: 'images/list_2/timeline_2/8_Cillian_Murphy.png'},
+{face: 'images/list_2/timeline_2/9_Jessica_Alba.png'},
+{face: 'images/list_2/timeline_2/10_Robert_Pattinson.png'},
+{face: 'images/list_2/timeline_2/11_Emma_Robert.png'},
+{face: 'images/list_2/timeline_2/12_Billie_Eilish.png'},
+    ],
+    randomize_order: false,
+}
+
+    var list_2_nonlinear = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+{face: 'images/list_2/timeline_2/1_Muhammad_Ali.png'},
+{face: 'images/list_2/timeline_2/2_Paul_Simon.png'},
+{face: 'images/list_2/timeline_2/3_Dolly_Parton.png'},
+{face: 'images/list_2/timeline_2/4_Robin_Williams.png'},
+{face: 'images/list_2/timeline_2/5_Eddie_Murphy.png'},
+{face: 'images/list_2/timeline_2/6_Halle_Berry.png'},
+{face: 'images/list_2/timeline_2/7_Amy_Poehler.png'},
+{face: 'images/list_2/timeline_2/8_Cillian_Murphy.png'},
+{face: 'images/list_2/timeline_2/9_Jessica_Alba.png'},
+{face: 'images/list_2/timeline_2/10_Robert_Pattinson.png'},
+{face: 'images/list_2/timeline_2/11_Emma_Robert.png'},
+{face: 'images/list_2/timeline_2/12_Billie_Eilish.png'},
+    ],
+    randomize_order: true,
+}
+
+
+    var list_2_no_order = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['hot', 'cold'],
+    prompt: "<p>Is their favorite food hot or cold?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+{face: 'images/list_2/control_2/1_Muhammad_Ali_f.png'},
+{face: 'images/list_2/control_2/2_Paul_Simon_f.png'},
+{face: 'images/list_2/control_2/3_Dolly_Parton_f.png'},
+{face: 'images/list_2/control_2/4_Robin_Williams_f.png'},
+{face: 'images/list_2/control_2/5_Eddie_Murphy_f.png'},
+{face: 'images/list_2/control_2/6_Halle_Berry_f.png'},
+{face: 'images/list_2/control_2/7_Amy_Poehler_f.png'},
+{face: 'images/list_2/control_2/8_Cillian_Murphy_f.png'},
+{face: 'images/list_2/control_2/9_Jessica_Alba_f.png'},
+{face: 'images/list_2/control_2/10_Robert_Pattinson_f.png'},
+{face: 'images/list_2/control_2/11_Emma_Robert_f.png'},
+{face: 'images/list_2/control_2/12_Billie_Eilish_f.png'},
+    ],
+    randomize_order: true,
+}
+
+
+ var list_3_linear = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+    {face: 'images/list_3/timeline_3/1_Yoko_Ono.png'},
+    {face: 'images/list_3/timeline_3/2_Ben_Kingsley.png'},
+    {face: 'images/list_3/timeline_3/3_Billy_Crystal.png'},
+    {face: 'images/list_3/timeline_3/4_Cyndi_Lauper.png'},
+    {face: 'images/list_3/timeline_3/5_Alec_Baldwin.png'},
+    {face: 'images/list_3/timeline_3/6_Brad_Pitt.png'},
+    {face: 'images/list_3/timeline_3/7_Sharon_Stone.png'},
+    {face: 'images/list_3/timeline_3/8_Tyra_Banks.png'},
+    {face: 'images/list_3/timeline_3/9_John_Legend.png'},
+    {face: 'images/list_3/timeline_3/10_Jonah_Hill.png'},
+    {face: 'images/list_3/timeline_3/11_Ariana_Grande.png'},
+    {face: 'images/list_3/timeline_3/12_Greta_Thunberg.png'},
+    ],
+    randomize_order: false,
+}
+
+    var list_3_nonlinear = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+    {face: 'images/list_3/timeline_3/1_Yoko_Ono.png'},
+    {face: 'images/list_3/timeline_3/2_Ben_Kingsley.png'},
+    {face: 'images/list_3/timeline_3/3_Billy_Crystal.png'},
+    {face: 'images/list_3/timeline_3/4_Cyndi_Lauper.png'},
+    {face: 'images/list_3/timeline_3/5_Alec_Baldwin.png'},
+    {face: 'images/list_3/timeline_3/6_Brad_Pitt.png'},
+    {face: 'images/list_3/timeline_3/7_Sharon_Stone.png'},
+    {face: 'images/list_3/timeline_3/8_Tyra_Banks.png'},
+    {face: 'images/list_3/timeline_3/9_John_Legend.png'},
+    {face: 'images/list_3/timeline_3/10_Jonah_Hill.png'},
+    {face: 'images/list_3/timeline_3/11_Ariana_Grande.png'},
+    {face: 'images/list_3/timeline_3/12_Greta_Thunberg.png'},
+    ],
+    randomize_order: true,
+}
+
+
+    var list_3_no_order = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['hot', 'cold'],
+    prompt: "<p>Is their favorite food hot or cold?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+    {face: 'images/list_3/control_3/1_Yoko_Ono_f.png'},
+    {face: 'images/list_3/control_3/2_Ben_Kingsley_f.png'},
+    {face: 'images/list_3/control_3/3_Billy_Crystal_f.png'},
+    {face: 'images/list_3/control_3/4_Cyndi_Lauper_f.png'},
+    {face: 'images/list_3/control_3/5_Alec_Baldwin_f.png'},
+    {face: 'images/list_3/control_3/6_Brad_Pitt_f.png'},
+    {face: 'images/list_3/control_3/7_Sharon_Stone_f.png'},
+    {face: 'images/list_3/control_3/8_Tyra_Banks_f.png'},
+    {face: 'images/list_3/control_3/9_John_Legend_f.png'},
+    {face: 'images/list_3/control_3/10_Jonah_Hill_f.png'},
+    {face: 'images/list_3/control_3/11_Ariana_Grande_f.png'},
+    {face: 'images/list_3/control_3/12_Greta_Thunberg_f.png'},
+    ],
+    randomize_order: true,
+}
+
+// Function to randomly select one of the specified options
+function chooseRandomOption() {
+    const options = [
+        [list_1_linear, list_2_nonlinear, list_3_no_order],
+        [list_1_linear, list_2_no_order, list_3_nonlinear],
+        [list_1_nonlinear, list_2_linear, list_3_no_order],
+        [list_1_nonlinear, list_2_no_order, list_3_linear],
+        [list_1_no_order, list_2_linear, list_3_nonlinear],
+        [list_1_no_order, list_2_nonlinear, list_3_linear]
+    ];
+
+    // Randomly select one option
+    const selectedOption = jsPsych.randomization.shuffle(options)[0];
+
+    return selectedOption;
+}
+
+// Choose one of the specified options
+const selectedOption = chooseRandomOption();
+
+// Print the selected option
+console.log("Selected Option:", selectedOption);
+
+
     var trial_03 = {
         type: jsPsychInstructions,
         pages: [
 
         '<span style="color: black; font-size: 24px"> Welcome to the experiment. Click next to begin.</span>',
     '<span style="color: black; font-size: 24px"> In this experiment, you will see a list of celebrity photos.  </span>' +'<br/>'+ '<span style="color: black; font-size: 24px">  </span>'
-    +'<br/>'+ '<span style="color: black; font-size: 24px"> After the picture is displayed, you will be asked to say how much you like that specific celebrity. </span>'
+    +'<br/>'+ '<span style="color: black; font-size: 24px"> After the picture is displayed, you will be asked to answer a question related to that celebrity. </span>'
     +'<br/>'+ '<span style="color: black; font-size: 24px"> Click "Next" for an example. </span>',
     
     ],
@@ -222,60 +726,6 @@ timeline_variables: [
     timeline.push(trial_08);
 
 
-    var trial_09 = {
-    timeline: [
-
-    {
-    type: jsPsychImageButtonResponse,
-    stimulus: jsPsych.timelineVariable('face'),
-    stimulus_width:"300",
-    stimulus_height:'300' ,
-    choices: [],
-    prompt: "",
-    trial_duration: "4500"
-
-    },
-    {
-    type: jsPsychImageButtonResponse,
-    prompt: '<p></p>',
-    stimulus: jsPsych.timelineVariable('face'),
-    stimulus_width:"300",
-    stimulus_height:'300',
-    trial_duration: "2700",
-    choices: ['odd', 'even'],
-    prompt: "<p>Is the year of birth odd or even?</p>",  },
-  {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "",
-    trial_duration: "1800"
-  },
-],
-
-
-timeline_variables: [
-        {face: 'images/list_1/timeline_1/1_Clint_Eastwood.png'},
-        {face: 'images/list_1/timeline_1/2_Julie_Andrews.png'},
-        {face: 'images/list_1/timeline_1/3_Patrick_Stewart.png'},
-        {face: 'images/list_1/timeline_1/4_Stevie_Wonder.png'},
-        {face: 'images/list_1/timeline_1/5_Sean_Penn.png'},
-        {face: 'images/list_1/timeline_1/6__Brooke_Shields.png'},
-        {face: 'images/list_1/timeline_1/7_Tina_Fey.png'},
-        {face: 'images/list_1/timeline_1/8__Pedro_Pascal.png'},
-        {face: 'images/list_1/timeline_1/9_Kristen_Bell.png'},
-        {face: 'images/list_1/timeline_1/10_Jennifer_Lawrence.png'},
-        {face: 'images/list_1/timeline_1/11_Timothee_Chalamet.png'},
-        {face: 'images/list_1/timeline_1/12_Halle_Bailey.png'}
-    ],
-    randomize_order: false,
-
-
-}
-
-
-
-
     var trial_10 = {
     type: jsPsychHtmlAudioResponse,
     stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
@@ -306,52 +756,7 @@ timeline_variables: [
     
 
 
-    var trial_11 = {
-    timeline: [
-
-    {
-    type: jsPsychImageButtonResponse,
-    stimulus: jsPsych.timelineVariable('face'),
-    stimulus_width:"300",
-    stimulus_height:'300' ,
-    choices: [],
-    prompt: "",
-    trial_duration: "4500"
-
-    },
-    {
-    type: jsPsychImageButtonResponse,
-    prompt: '<p></p>',
-    stimulus: jsPsych.timelineVariable('face'),
-    stimulus_width:"300",
-    stimulus_height:'300',
-    trial_duration: "2700",
-    choices: ['odd', 'even'],
-    prompt: "<p>Is the year of birth odd or even?</p>",  },
-  {
-    type: jsPsychImageButtonResponse,
-    stimulus: [],
-    choices: [],
-    prompt: "",
-    trial_duration: "1800"
-  }
-],
-timeline_variables: [
-        {face: 'images/list_2/timeline_2/8_Cillian_Murphy.png'},
-        {face: 'images/list_2/timeline_2/4_Robin_Williams.png'},
-        {face: 'images/list_2/timeline_2/10_Robert_Pattinson.png'},
-        {face: 'images/list_2/timeline_2/2_Paul_Simon.png'},
-        {face: 'images/list_2/timeline_2/6_Halle_Berry.png'},
-        {face: 'images/list_2/timeline_2/1_Muhammad_Ali.png'},
-        {face: 'images/list_2/timeline_2/7_Amy_Poehler.png'},
-        {face: 'images/list_2/timeline_2/12_Billie_Eilish.png'},
-        {face: 'images/list_2/timeline_2/3_Dolly_Parton.png'},
-        {face: 'images/list_2/timeline_2/9_Jessica_Alba.png'},
-        {face: 'images/list_2/timeline_2/5_Eddie_Murphy.png'},
-        {face: 'images/list_2/timeline_2/11_Emma_Robert.png'},
-    ],
-    randomize_order: false,
-}
+   
 
     var trial_12 = {
     type: jsPsychHtmlAudioResponse,
@@ -382,56 +787,7 @@ timeline_variables: [
 };
     
 
-
-    var trial_13 = {
-      timeline: [
-
-{
-type: jsPsychImageButtonResponse,
-stimulus: jsPsych.timelineVariable('face'),
-stimulus_width:"300",
-stimulus_height:'300' ,
-choices: [],
-prompt: "",
-trial_duration: "4500"
-
-},
-{
-type: jsPsychImageButtonResponse,
-prompt: '<p></p>',
-stimulus: jsPsych.timelineVariable('face'),
-stimulus_width:"300",
-stimulus_height:'300',
-trial_duration: "2700",
-choices: ['cold', 'hot'],
-prompt: "<p>Is their favorite food cold or hot?</p>",  },
-{
-type: jsPsychImageButtonResponse,
-stimulus: [],
-choices: [],
-prompt: "",
-trial_duration: "1800"
-}
-],
-timeline_variables: [
-    {face: 'images/list_3/control_3/3_Billy_Crystal.png'},
-    {face: 'images/list_3/control_3/9_John_Legend.png'},
-    {face: 'images/list_3/control_3/1_Yoko_Ono.png'},
-    {face: 'images/list_3/control_3/7_Sharon_Stone.png'},
-    {face: 'images/list_3/control_3/10_Jonah_Hill.png'},
-    {face: 'images/list_3/control_3/5_Alec_Baldwin.png'},
-    {face: 'images/list_3/control_3/11_Ariana_Grande.png'},
-    {face: 'images/list_3/control_3/6_Brad_Pitt.png'},
-    {face: 'images/list_3/control_3/2_Ben_Kingsley.png'},
-    {face: 'images/list_3/control_3/12_Greta_Thunberg.png'},
-    {face: 'images/list_3/control_3/4_Cyndi_Lauper.png'},
-    {face: 'images/list_3/control_3/8_Tyra_Banks.png'},
-],
-randomize_order: false,
-
-}
-
-var myArray = [trial_09, trial_11, trial_13];
+var myArray = [selectedOption[0], selectedOption[1], selectedOption[2]];
 var shuffledArray = jsPsych.randomization.repeat(myArray, 1);
 timeline.push(shuffledArray[0],trial_10, shuffledArray[1],trial_12,shuffledArray[2]);
 
