@@ -83,7 +83,6 @@ var list0 = [
 // this adds a property called 'subject' and a property called 'condition' to every trial
 jsPsych.data.addProperties({
   subject: subject_id,
-  audio_id : audio_id
   //condition: condition_assignment
 });
 
@@ -690,6 +689,12 @@ timeline_variables: [
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
+
+            var audio_id = responseData.audio_id;
+            jsPsych.data.addProperties({
+            audio :audio_id,
+  //condition: condition_assignment
+});
             
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
@@ -744,6 +749,10 @@ timeline_variables: [
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
+            jsPsych.data.addProperties({
+            audio :audio_id,
+  //condition: condition_assignment
+});
             
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
@@ -776,6 +785,12 @@ timeline_variables: [
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
+
+            var audio_id = responseData.audio_id;
+            jsPsych.data.addProperties({
+            audio :audio_id,
+  //condition: condition_assignment
+});
             
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
@@ -809,6 +824,12 @@ timeline.push(shuffledArray[0],trial_10, shuffledArray[1],trial_12,shuffledArray
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
+
+            var audio_id = responseData.audio_id;
+            jsPsych.data.addProperties({
+            audio :audio_id,
+  //condition: condition_assignment
+});
             
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
