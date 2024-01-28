@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <style>
+        .hide_cursor {
+            cursor: none;
+        }
+        </style>
+
+    <title>My experiment</title>
+    <script src="jspsych/plugins/jspsych.js"></script>
+    <!--<script src="jspsych/plugins/jspsych-order.js"></script>-->
+    <script src="jspsych/plugins/plugin-instructions.js"></script>
+    <script src="jspsych/plugins/plugin-survey-text.js"></script>
+    <script src="jspsych/plugins/plugin-html-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-image-button-response.js"></script>
+    <script src="jspsych/plugins/plugin-image-keyboard-response.js"></script>
+    <script src="jspsych/plugins/plugin-html-audio-response.js"></script>
+    <script src="jspsych/plugins/plugin-initialize-microphone.js"></script>
+    <script src="jspsych/plugins/plugin-fullscreen.js"></script>
+    <script src="jspsych/plugins/plugin-preload.js"></script>
+    <script src="jspsych/plugins/plugin-browser-check.js"></script>
+
+    <script src="Tools/Functions.js"></script>
+
+
+    <link rel="stylesheet" href="jspsych/css/jspsych.css">
+  </head>
+  <body></body>
+  <script>
+
+//var data_folder             = 'data/Individual_data/'
+var data_folder             = 'data/'
+
+var int_data_folder         = 'data/Interactive_data/'
+var tools_folder            = 'Tools'
+
+    /* initialize jsPsych */
+    var jsPsych = initJsPsych({
+      on_finish: function() {
+        jsPsych.data.displayData();
+        saveData(data_folder+'All_data/all_data_sub_'+subject_id+".csv", jsPsych.data.get().csv());
+        jsPsych.data.get().localSave('csv','mydata.csv');
+
+      }
+    });
+
+    /* create timeline */
+var timeline = [];
+
+    // generate a random subject ID with 15 characters
+var subject_id = jsPsych.randomization.randomID(15);
+
+// pick a random condition for the subject at the start of the experiment
+var condition_assignment = jsPsych.randomization.sampleWithoutReplacement(['conditionA', 'conditionB', 'conditionC'], 1)[0];
+
+// record the condition assignment in the jsPsych data
+// this adds a property called 'subject' and a property called 'condition' to every trial
+jsPsych.data.addProperties({
+  subject: subject_id,
+  condition: condition_assignment
+});
+
+
+    /* preload images */
+    var preload = {
+      type: jsPsychPreload,
+      images: ['images/instructions/timeline_0/1_Barck_Obama.png', 'images/instructions/timeline_0/2_Leonardo_DiCaprio.png',
+       'images/instructions/timeline_0/3_Beyonce.png', 'images/instructions/timeline_0/4_Taylor_Swift.png', 'images/list_1/timeline_1/1_Clint Eastwood.png',
+        'images/list_1/timeline_1/2_Julie_Andrews.png', 'images/list_1/timeline_1/3_Patrick_Stewart.png', 'images/list_1/timeline_1/4_Stevie_Wonder.png',
+        'images/list_1/timeline_1/5_Sean_Penn.png','images/list_1/timeline_1/6__Brooke_Shields.png','images/list_1/timeline_1/7_Tina_Fey.png',
+        'images/list_1/timeline_1/8__Pedro_Pascal.png','images/list_1/timeline_1/9_Kristen_Bell.png','images/list_1/timeline_1/10_Jennifer_Lawrence.png',
+        'images/list_1/timeline_1/11_Timothée_Chalamet.png','images/list_1/timeline_1/12_Halle_Bailey.png','images/list_2/timeline_2/1_Muhammad_Ali.png',
+        'images/list_2/timeline_2/2_Paul_Simon.png', 'images/list_2/timeline_2/3_Dolly_Parton.png', 'images/list_2/timeline_2/4_Robin_Williams.png',
+        'images/list_2/timeline_2/5_Eddie_Murphy.png','images/list_2/timeline_2/6_Halle_Berry.png', 'images/list_2/timeline_2/7_Amy_Poehler.png',
+        'images/list_2/timeline_2/8_Cillian_Murphy.png','images/list_2/timeline_2/9_Jessica_Alba.png',
+        'images/list_2/timeline_2/10_Robert_Pattinson.png','images/list_2/timeline_2/11_Emma_Robert.png',
+        'images/list_2/timeline_2/12_Billie_Eilish.png','images/list_3/timeline_3/1_Yoko_Ono.png',
+        'images/list_3/timeline_3/2_Ben_Kingsley.png','images/list_3/timeline_3/3_Billy_Crystal.png', 'images/list_3/timeline_3/4_Cyndi_Lauper.png',
+        'images/list_3/timeline_3/5_Alec_Baldwin.png', 'images/list_3/timeline_3/6_Brad_Pitt.png', 'images/list_3/timeline_3/7_Sharon_Stone.png',
+        'images/list_3/timeline_3/8_Tyra_Banks.png','images/list_3/timeline_3/9_John_Legend.png','images/list_3/timeline_3/10_Jonah_Hill.png',
+        'images/list_3/timeline_3/11_Ariana_Grande.png','images/list_3/timeline_3/12_Greta_Thunberg.png']};
+    timeline.push(preload);
+
+    var trial_01 = {
+  type: jsPsychFullscreen,
+  fullscreen_mode: true
+}
+
+  /* create timeline */
+timeline.push(trial_01);
+
+
+    var trial_02 = {
+        type: jsPsychInitializeMicrophone
+    };
+    timeline.push(trial_02);
+
+    var trial_03 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px"> Welcome to the experiment. Click next to begin.</span>',
+    '<span style="color: black; font-size: 24px"> In this experiment, you will see a list of celebrity photos.  </span>' +'<br/>'+ '<span style="color: black; font-size: 24px">  </span>'
+    +'<br/>'+ '<span style="color: black; font-size: 24px"> After the picture is displayed, you will be asked to say how much you like that specific celebrity. </span>'
+    +'<br/>'+ '<span style="color: black; font-size: 24px"> Click "Next" for an example. </span>',
+    
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_03);
+
+
+    var trial_04 = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even',],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+        {face: 'images/instructions/timeline_0/1_Barck_Obama.png'},
+        {face: 'images/instructions/timeline_0/2_Leonardo_DiCaprio.png'},
+        {face: 'images/instructions/timeline_0/3_Beyonce.png'},
+        
+
+
+    ],
+
+}
+    timeline.push(trial_04);
+
+    
+    var trial_05 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px">At the end of the list, you will be asked to say out loud the names of the celebrities you saw. The names can be said in any order.</span>',
+        '<span style="color: black; font-size: 24px"> Click "Next" for an example. </span>',
+    
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_05);
+
+    
+    var trial_06 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 15000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+ timeline.push(trial_06);
+
+
+ var trial_07 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px"> Great.</span>' +'<br/>'+ '<span style="color: black; font-size: 24px"> When you are ready, start the experiment.</span>'
+
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_07);
+    
+
+    /* define welcome message trial */
+    var trial_08 = {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "<p>Celebrities</p>",
+    trial_duration: "1800"
+
+    };
+    timeline.push(trial_08);
+
+
+    var trial_09 = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  },
+],
+
+
+timeline_variables: [
+        {face: 'images/list_1/timeline_1/1_Clint Eastwood.png'},
+        {face: 'images/list_1/timeline_1/2_Julie_Andrews.png'},
+        {face: 'images/list_1/timeline_1/3_Patrick_Stewart.png'},
+        {face: 'images/list_1/timeline_1/4_Stevie_Wonder.png'},
+        {face: 'images/list_1/timeline_1/5_Sean_Penn.png'},
+        {face: 'images/list_1/timeline_1/6__Brooke_Shields.png'},
+        {face: 'images/list_1/timeline_1/7_Tina_Fey.png'},
+        {face: 'images/list_1/timeline_1/8__Pedro_Pascal.png'},
+        {face: 'images/list_1/timeline_1/9_Kristen_Bell.png'},
+        {face: 'images/list_1/timeline_1/10_Jennifer_Lawrence.png'},
+        {face: 'images/list_1/timeline_1/11_Timothée_Chalamet.png'},
+        {face: 'images/list_1/timeline_1/12_Halle_Bailey.png'}
+    ],
+    randomize_order: false,
+
+
+}
+
+
+
+
+    var trial_10 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 30000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+    
+
+
+    var trial_11 = {
+    timeline: [
+
+    {
+    type: jsPsychImageButtonResponse,
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300' ,
+    choices: [],
+    prompt: "",
+    trial_duration: "4500"
+
+    },
+    {
+    type: jsPsychImageButtonResponse,
+    prompt: '<p></p>',
+    stimulus: jsPsych.timelineVariable('face'),
+    stimulus_width:"300",
+    stimulus_height:'300',
+    trial_duration: "2700",
+    choices: ['odd', 'even'],
+    prompt: "<p>Is the year of birth odd or even?</p>",  },
+  {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "",
+    trial_duration: "1800"
+  }
+],
+timeline_variables: [
+        {face: 'images/list_2/timeline_2/8_Cillian_Murphy.png'},
+        {face: 'images/list_2/timeline_2/4_Robin_Williams.png'},
+        {face: 'images/list_2/timeline_2/10_Robert_Pattinson.png'},
+        {face: 'images/list_2/timeline_2/2_Paul_Simon.png'},
+        {face: 'images/list_2/timeline_2/6_Halle_Berry.png'},
+        {face: 'images/list_2/timeline_2/1_Muhammad_Ali.png'},
+        {face: 'images/list_2/timeline_2/7_Amy_Poehler.png'},
+        {face: 'images/list_2/timeline_2/12_Billie_Eilish.png'},
+        {face: 'images/list_2/timeline_2/3_Dolly_Parton.png'},
+        {face: 'images/list_2/timeline_2/9_Jessica_Alba.png'},
+        {face: 'images/list_2/timeline_2/5_Eddie_Murphy.png'},
+        {face: 'images/list_2/timeline_2/11_Emma_Robert.png'},
+    ],
+    randomize_order: false,
+}
+
+    var trial_12 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 15000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+    
+
+
+    var trial_13 = {
+      timeline: [
+
+{
+type: jsPsychImageButtonResponse,
+stimulus: jsPsych.timelineVariable('face'),
+stimulus_width:"300",
+stimulus_height:'300' ,
+choices: [],
+prompt: "",
+trial_duration: "4500"
+
+},
+{
+type: jsPsychImageButtonResponse,
+prompt: '<p></p>',
+stimulus: jsPsych.timelineVariable('face'),
+stimulus_width:"300",
+stimulus_height:'300',
+trial_duration: "2700",
+choices: ['cold', 'hot'],
+prompt: "<p>Is their favorite food cold or hot?</p>",  },
+{
+type: jsPsychImageButtonResponse,
+stimulus: [],
+choices: [],
+prompt: "",
+trial_duration: "1800"
+}
+],
+timeline_variables: [
+    {face: 'images/list_3/control_3/3_Billy_Crystal.png'},
+    {face: 'images/list_3/control_3/9_John_Legend.png'},
+    {face: 'images/list_3/control_3/1_Yoko_Ono.png'},
+    {face: 'images/list_3/control_3/7_Sharon_Stone.png'},
+    {face: 'images/list_3/control_3/10_Jonah_Hill.png'},
+    {face: 'images/list_3/control_3/5_Alec_Baldwin.png'},
+    {face: 'images/list_3/control_3/11_Ariana_Grande.png'},
+    {face: 'images/list_3/control_3/6_Brad_Pitt.png'},
+    {face: 'images/list_3/control_3/2_Ben_Kingsley.png'},
+    {face: 'images/list_3/control_3/12_Greta_Thunberg.png'},
+    {face: 'images/list_3/control_3/4_Cyndi_Lauper.png'},
+    {face: 'images/list_3/control_3/8_Tyra_Banks.png'},
+],
+randomize_order: false,
+
+}
+
+var myArray = [trial_09, trial_11, trial_13];
+var shuffledArray = jsPsych.randomization.repeat(myArray, 1);
+timeline.push(shuffledArray[0], trial_10, shuffledArray[1],trial_11,shuffledArray[2]);
+
+    var trial_14 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 15000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+ timeline.push(trial_14);
+
+    
+
+    /* var trial_10 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 15000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+ timeline.push(trial_10);*/
+
+
+var trial_15 = {
+  type: jsPsychSurveyText,
+  questions: [
+    {prompt: 'please insert your gender (MALE/ FEMALE/ OTHER)'},
+    {prompt: 'Please insert your age'}
+  ]
+}
+timeline.push(trial_15);
+
+
+var trial_16 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px"> You have completed the experiment.'  +'<br/>'+ 'The Completion Code is : AJFHBG897' +'<br/>'+  'Thank you for your participation!</span>'
+
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_16);
+
+    /* start the experiment */
+    jsPsych.run(timeline);
+    
+
+  </script>
+</html>
