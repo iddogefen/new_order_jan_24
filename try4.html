@@ -678,7 +678,6 @@ timeline_variables: [
     stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
         <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
     recording_duration: 40000,
-    data: { audio: audio_id },
     allow_playback: true,
     on_finish: function(data){
         fetch('/save-my-data.php', { 
@@ -693,7 +692,13 @@ timeline_variables: [
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
 
-            
+            // Add audio_id to jsPsych.data
+            jsPsych.data.addProperties({
+                audio_id: audio_id,
+                subject: subject_id,
+                // condition: condition_assignment
+            });
+
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
         })
@@ -702,7 +707,8 @@ timeline_variables: [
         });
     }
 };
- timeline.push(trial_06);
+
+timeline.push(trial_06);
 
 
  
