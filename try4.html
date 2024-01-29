@@ -84,7 +84,7 @@ var audio_id = [];
 // this adds a property called 'subject' and a property called 'condition' to every trial
 jsPsych.data.addProperties({
   subject: subject_id,
-  audio : audio_id,
+
   //condition: condition_assignment
 });
 
@@ -678,6 +678,7 @@ timeline_variables: [
     stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
         <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
     recording_duration: 40000,
+    data: { audio: audio_id },
     allow_playback: true,
     on_finish: function(data){
         fetch('/save-my-data.php', { 
@@ -690,8 +691,6 @@ timeline_variables: [
         .then(response => response.json())
         .then(responseData => {
             // Assuming the response contains the generated audio_id
-            var audio_id = responseData.audio_id;
-
             var audio_id = responseData.audio_id;
 
             
