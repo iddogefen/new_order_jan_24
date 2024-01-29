@@ -786,10 +786,7 @@ timeline.push(trial_06);
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                audio_base64: data.response,
-                subject_id: subject_id  // Include subject ID in the data
-            })
+            body: JSON.stringify({ audio_base64: data.response, subject_id: subject_id })
         })
         .then(response => response.json())
         .then(responseData => {
@@ -811,7 +808,6 @@ timeline.push(trial_06);
         });
     }
 };
-    
 
 var myArray = [selectedOption[0], selectedOption[1], selectedOption[2]];
 var shuffledArray = jsPsych.randomization.repeat(myArray, 1);
@@ -829,10 +825,7 @@ timeline.push(shuffledArray[0],trial_10, shuffledArray[1],trial_12,shuffledArray
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                audio_base64: data.response,
-                subject_id: subject_id  // Include subject ID in the data
-            })
+            body: JSON.stringify({ audio_base64: data.response, subject_id: subject_id })
         })
         .then(response => response.json())
         .then(responseData => {
