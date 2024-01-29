@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Decode the base64-encoded audio data
         $audio_data = base64_decode($data->audio_base64);
 
-        // Generate a unique ID for the audio file (you may use your own logic here)
+        // Generate a unique ID for the audio file using the current date
         $audio_id = generateUniqueID();
 
         // Define the path to store the audio file
@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(array('error' => 'Method not allowed'));
 }
 
-// Function to generate a unique ID (you may implement your own logic)
+// Function to generate a unique ID using the current date
 function generateUniqueID() {
-    return subject_id;
+    return date('Y-m-d-H-i-s'); // Date format: YYYYMMDDHHIISS
 }
 
 ?>
