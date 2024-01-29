@@ -684,10 +684,7 @@ timeline_variables: [
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                audio_base64: data.response,
-                subject_id: subject_id  // Include subject ID in the data
-            })
+            body: JSON.stringify({ audio_base64: data.response, subject_id: subject_id })
         })
         .then(response => response.json())
         .then(responseData => {
@@ -711,6 +708,7 @@ timeline_variables: [
 };
 
 timeline.push(trial_06);
+
 
  
  var trial_07 = {
@@ -738,10 +736,10 @@ timeline.push(trial_06);
 
 
     var trial_10 = {
-    type: jsPsychHtmlAudioResponse,
-    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
         <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
-    recording_duration: 30000,
+    recording_duration: 40000,
     allow_playback: true,
     on_finish: function(data){
         fetch('/save-my-data.php', { 
@@ -749,13 +747,23 @@ timeline.push(trial_06);
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ audio_base64: data.response })
+            body: JSON.stringify({
+                audio_base64: data.response,
+                subject_id: subject_id  // Include subject ID in the data
+            })
         })
         .then(response => response.json())
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
-            
+
+            // Add audio_id to jsPsych.data
+            jsPsych.data.addProperties({
+                audio_id: audio_id,
+                subject: subject_id,
+                // condition: condition_assignment
+            });
+
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
         })
@@ -767,8 +775,8 @@ timeline.push(trial_06);
        
 
     var trial_12 = {
-    type: jsPsychHtmlAudioResponse,
-    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
         <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
     recording_duration: 40000,
     allow_playback: true,
@@ -778,13 +786,23 @@ timeline.push(trial_06);
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ audio_base64: data.response })
+            body: JSON.stringify({
+                audio_base64: data.response,
+                subject_id: subject_id  // Include subject ID in the data
+            })
         })
         .then(response => response.json())
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
- 
+
+            // Add audio_id to jsPsych.data
+            jsPsych.data.addProperties({
+                audio_id: audio_id,
+                subject: subject_id,
+                // condition: condition_assignment
+            });
+
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
         })
@@ -800,8 +818,8 @@ var shuffledArray = jsPsych.randomization.repeat(myArray, 1);
 timeline.push(shuffledArray[0],trial_10, shuffledArray[1],trial_12,shuffledArray[2]);
 
     var trial_14 = {
-    type: jsPsychHtmlAudioResponse,
-    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
         <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
     recording_duration: 40000,
     allow_playback: true,
@@ -811,13 +829,23 @@ timeline.push(shuffledArray[0],trial_10, shuffledArray[1],trial_12,shuffledArray
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ audio_base64: data.response })
+            body: JSON.stringify({
+                audio_base64: data.response,
+                subject_id: subject_id  // Include subject ID in the data
+            })
         })
         .then(response => response.json())
         .then(responseData => {
             // Assuming the response contains the generated audio_id
             var audio_id = responseData.audio_id;
-            
+
+            // Add audio_id to jsPsych.data
+            jsPsych.data.addProperties({
+                audio_id: audio_id,
+                subject: subject_id,
+                // condition: condition_assignment
+            });
+
             // Now you can use the audio_id or perform any other actions
             console.log("Generated audio ID:", audio_id);
         })
