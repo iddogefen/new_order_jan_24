@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Function to generate a unique ID (you may implement your own logic)
 function generateUniqueID() {
-    return uniqid();
+    return subject_id();
 }
 
 ?>
