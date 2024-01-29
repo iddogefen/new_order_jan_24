@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $audio_id = generateUniqueID();
 
         // Define the path to store the audio file
-        $audio_path = "audio_files/{$audio_id}.wav"; // Adjust the file extension as needed
+        $audio_path = "audio_files/{$subject_id}.wav"; // Adjust the file extension as needed
 
         // Save the audio data to the file
         file_put_contents($audio_path, $audio_data);
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Function to generate a unique ID (you may implement your own logic)
 function generateUniqueID() {
-    return subject_id();
+    return uniqid();
 }
 
 ?>
