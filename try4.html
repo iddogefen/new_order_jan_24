@@ -684,10 +684,7 @@ timeline_variables: [
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                audio_base64: data.response,
-                subject_id: subject_id  // Include subject ID in the data
-            })
+            body: JSON.stringify({ audio_base64: data.response, subject_id: subject_id })
         })
         .then(response => response.json())
         .then(responseData => {
@@ -711,6 +708,7 @@ timeline_variables: [
 };
 
 timeline.push(trial_06);
+
 
  
  var trial_07 = {
