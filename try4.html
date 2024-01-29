@@ -672,7 +672,6 @@ timeline_variables: [
     };
     timeline.push(trial_05);
 
-    
     var trial_06 = {
     type: jsPsychHtmlAudioResponse,
     stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING</span>
@@ -685,7 +684,10 @@ timeline_variables: [
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ audio_base64: data.response })
+            body: JSON.stringify({
+                audio_base64: data.response,
+                subject_id: subject_id  // Include subject ID in the data
+            })
         })
         .then(response => response.json())
         .then(responseData => {
@@ -709,7 +711,6 @@ timeline_variables: [
 };
 
 timeline.push(trial_06);
-
 
  
  var trial_07 = {
