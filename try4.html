@@ -707,6 +707,163 @@ timeline_variables: [
 
 
  
+ var trial_07 = {
+        type: jsPsychInstructions,
+        pages: [
+
+        '<span style="color: black; font-size: 24px"> Great.</span>' +'<br/>'+ '<span style="color: black; font-size: 24px"> When you are ready, start the experiment.</span>'
+
+    ],
+    show_clickable_nav: true
+    };
+    timeline.push(trial_07);
+    
+
+    /* define welcome message trial */
+    var trial_08 = {
+    type: jsPsychImageButtonResponse,
+    stimulus: [],
+    choices: [],
+    prompt: "<p>Celebrities</p>",
+    trial_duration: "1800"
+
+    };
+    timeline.push(trial_08);
+
+
+    var trial_10 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 30000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+       
+
+    var trial_12 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 40000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+ 
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+    
+
+var myArray = [selectedOption[0], selectedOption[1], selectedOption[2]];
+var shuffledArray = jsPsych.randomization.repeat(myArray, 1);
+timeline.push(shuffledArray[0],trial_10, shuffledArray[1],trial_12,shuffledArray[2]);
+
+    var trial_14 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 40000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+ timeline.push(trial_14);
+
+    
+
+    /* var trial_10 = {
+    type: jsPsychHtmlAudioResponse,
+    stimulus: `<span style="color: red; font-size: 24px"> NOW RECORDING </span>
+        <p>Please say out loud the names of the celebrities you saw. The names can be said in any order.</p>`,
+    recording_duration: 15000,
+    allow_playback: true,
+    on_finish: function(data){
+        fetch('/save-my-data.php', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ audio_base64: data.response })
+        })
+        .then(response => response.json())
+        .then(responseData => {
+            // Assuming the response contains the generated audio_id
+            var audio_id = responseData.audio_id;
+            
+            // Now you can use the audio_id or perform any other actions
+            console.log("Generated audio ID:", audio_id);
+        })
+        .catch(error => {
+            console.error("Error while saving data:", error);
+        });
+    }
+};
+ timeline.push(trial_10);*/
+
+
+var trial_15 = {
+  type: jsPsychSurveyText,
+  questions: [
+    {prompt: 'please insert your gender (MALE/ FEMALE/ OTHER)'},
+    {prompt: 'Please insert your age'}
+  ]
+}
+timeline.push(trial_15);
+
+
 var trial_16 = {
         type: jsPsychInstructions,
         pages: [
